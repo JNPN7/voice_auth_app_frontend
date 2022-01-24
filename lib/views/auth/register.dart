@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:voice_auth_app/data/ev.dart';
+import 'package:voice_auth_app/utils/recorder.dart';
 import 'package:voice_auth_app/views/notes.dart';
 import 'package:voice_auth_app/views/templates/music_animation.dart';
 // void main() => runApp(const MyApp());
@@ -34,6 +35,7 @@ class _RegisrationViewState extends State<RegisrationView> {
   String uname = "";
   String error = "";
   bool isRecording = false;
+  Recorder recorder = Recorder();
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +147,13 @@ class _RegisrationViewState extends State<RegisrationView> {
                   primary: elevatedButtonColor,
                   minimumSize: const Size(double.infinity, 45)
                 ),
-                onPressed: (){
+                onPressed: () async{
+                  if (!isRecording){
+                    await recorder.init("test.wav");
+                    await recorder.startRecord();
+                  }else{
+                    await recorder.stopRecord();
+                  }
                   setState(() {
                     isRecording = !isRecording;
                   });
